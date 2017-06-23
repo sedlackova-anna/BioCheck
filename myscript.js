@@ -13,19 +13,18 @@ function htmlreplace(a, b, element) {
     }
 }
 
-htmlreplace('the', 'le');
+//htmlreplace('the ', 'le ');
 
 function search(word, element) {
-	if (!element) element = document.body;    
-    var nodes = element.childNodes;
-    for (var n=0; n<nodes.length; n++) {
-        if (nodes[n].nodeType == Node.TEXT_NODE) {
-            var r = new RegExp(word, 'gi');
-            //nodes[n].textContent = nodes[n].textContent.replace(r, b);
-            console.log(nodes[n].textContent);
-        } else {
-            //htmlreplace(a, b, nodes[n]);
+	if (!element) element = document.body;
+    var nodes = element.getElementsByTagName("*");
+    console.log(nodes.length);
+    for (var n=nodes.length-1; n >= 0; n--) {
+        console.log(nodes[n].textContent);
+        if(nodes[n].textContent.indexOf(word) >= 0){
+        	//nodes[n].textContent = "HAHAHA";    // replace any element containing text with /word/ in it with "hahaha"
         }
+
     }
 }
 

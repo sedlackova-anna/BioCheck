@@ -1,13 +1,13 @@
 {
   "manifest_version": 2,
 
-  "name": "Getting started example",
-  "description": "This extension shows a Google Image search result for the current page",
+  "name": "Case MHacks Nano",
+  "description": "This extension gives info on the authors of online articles",
   "version": "1.0",
   "content_scripts": [
     {
       "exclude_matches": ["http://www.facebook.com/*"],
-      "matches": ["http://*/*"],
+      "matches": ["http://*/*","https://*/*"],
       "js": ["myscript.js"]
     }
   ],
@@ -19,5 +19,6 @@
   "permissions": [
     "activeTab",
     "https://ajax.googleapis.com/"
-  ]
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
