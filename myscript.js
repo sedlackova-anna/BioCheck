@@ -24,16 +24,6 @@ function findAuthor(){
           console.log(author);
         }
     }
-    
-    if(author == "NONE"){
-      console.log("look again for author");
-      nodes = document.querySelectorAll("a.byline-column-link");
-      for (var n = nodes.length-1; n >= 0; n--) {
-        if(nodes[n].textContent != "" && nodes[n].textContent.length < 500){
-          author = nodes[n].textContent;
-        }
-      }
-    }
   return author;
 }
 
@@ -63,17 +53,13 @@ httpGet("https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&pr
 
   		result = lol[key].extract;
 
-  		console.log(result);
-
   		author = author.replace("%20", " ").replace("%20", " ");
 
-      if(result == undefined){
+      if(result == undefined || result == ""){
         result = "No Wikipedia article for "+author;
       }
-
+      console.log(result);
   		console.log(author);
-
-  		document.body.innerHTML += result;
 
   		/*
 		chrome.runtime.sendMessage({deets: result, author: author}, function(response){

@@ -9,13 +9,22 @@
   <head>
     <title>Author Info</title>
     <style>
+      html {
+        height:400px;
+      }
       body {
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
         width: 350px;
+        outline-width: 2px;
       }
       div.author{
         font-size: 120%;
+        outline-width: 4px;
+      }
+      div.desc{
+        height:320px;
+        overflow-y: scroll;
       }
     </style>
 
@@ -23,9 +32,8 @@
     
   </head>
   <body>
-
     <div id="author" class="author">Author</div><br>
-    <div id="description">Description</div>
+    <div id="description" class="desc">Description</div>
 
     <script src="popup.js"></script>
 
