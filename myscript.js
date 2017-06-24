@@ -9,15 +9,32 @@ function httpGet(theUrl, callback)
     xmlHttp.send(null);
 }
 
+function capitalize(str)
+{
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
 function findAuthor(){
-    var nodes = document.querySelectorAll("span.byline-author");
-    var author = "";
+    var nodes = document.querySelectorAll("span.byline-author, .byline-column-link");
+    var author = "NONE";
+    console.log(nodes.length + " nodes");
     for (var n = nodes.length-1; n >= 0; n--) {
         if(nodes[n].textContent != "" && nodes[n].textContent.length < 500){
-          author = nodes[n].textContent.substring( 0, nodes[n].textContent.indexOf("@")-1);
+          author = nodes[n].textContent;
+          console.log(author);
         }
-    console.log(author);
-    return author;
+    }
+    
+    if(author == "NONE"){
+      console.log("look again for author");
+      nodes = document.querySelectorAll("a.byline-column-link");
+      for (var n = nodes.length-1; n >= 0; n--) {
+        if(nodes[n].textContent != "" && nodes[n].textContent.length < 500){
+          author = nodes[n].textContent;
+        }
+      }
+    }
+  return author;
 }
 
 /*
@@ -33,9 +50,9 @@ function findAuthor(){
     return author;
 }
 */
-var author = findAuthor();
+var author = capitalize(findAuthor());
 
-author = author.trim().replace(" ","%20");
+author = author.trim().replace(" ","%20").replace(" ","%20");
 
 var result = "Loading";
 
@@ -48,7 +65,7 @@ httpGet("https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&pr
 
   		console.log(result);
 
-  		author = author.replace("%20", " ");
+  		author = author.replace("%20", " ").replace("%20", " ");
 
       if(result == undefined){
         result = "No Wikipedia article for "+author;
