@@ -1,14 +1,26 @@
 function httpGet(theUrl, callback)
 {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
+    xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             callback(xmlHttp.responseText);
     }
-    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
     xmlHttp.send(null);
 }
 
+function findAuthor(){
+    var nodes = document.querySelectorAll("span.byline-author");
+    var author = "";
+    for (var n = nodes.length-1; n >= 0; n--) {
+        if(nodes[n].textContent != "" && nodes[n].textContent.length < 500){
+          author = nodes[n].textContent.substring( 0, nodes[n].textContent.indexOf("@")-1);
+        }
+    console.log(author);
+    return author;
+}
+
+/*
 function findAuthor(){
 	var element = document.body;
     var nodes = element.getElementsByTagName("*");
@@ -20,7 +32,7 @@ function findAuthor(){
     }
     return author;
 }
-
+*/
 var author = findAuthor();
 
 author = author.trim().replace(" ","%20");
@@ -58,4 +70,3 @@ chrome.runtime.onMessage.addListener(
     console.log(request);
       sendResponse({author: author, deets:result});
 });
-
