@@ -1,31 +1,61 @@
-console.log("testing 123");
-
-function htmlreplace(a, b, element) {    
-    if (!element) element = document.body;    
-    var nodes = element.childNodes;
-    for (var n=0; n<nodes.length; n++) {
-        if (nodes[n].nodeType == Node.TEXT_NODE) {
-            var r = new RegExp(a, 'gi');
-            nodes[n].textContent = nodes[n].textContent.replace(r, b);
-        } else {
-            htmlreplace(a, b, nodes[n]);
-        }
+function httpGet(theUrl, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
     }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
 }
 
-//htmlreplace('the ', 'le ');
-
-function search(word, element) {
-	if (!element) element = document.body;
+function findAuthor(){
+	var element = document.body;
     var nodes = element.getElementsByTagName("*");
-    console.log(nodes.length);
+    var author = "";
     for (var n=nodes.length-1; n >= 0; n--) {
-        console.log(nodes[n].textContent);
-        if(nodes[n].textContent.indexOf(word) >= 0){
-        	//nodes[n].textContent = "HAHAHA";    // replace any element containing text with /word/ in it with "hahaha"
+        if(nodes[n].textContent.indexOf("@") != -1 && nodes[n].textContent.length < 500){
+        	author = nodes[n].textContent.substring( 0, nodes[n].textContent.indexOf("@")-1);
         }
-
     }
+    return author;
 }
 
-search("a");
+var author = findAuthor();
+
+author = author.trim().replace(" ","%20");
+
+var result = "Loading";
+
+httpGet("https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts&user-agent=vincentextensionchromelol&exintro=&explaintext=&titles="+author,function(text){
+	text = JSON.parse(text);
+	var lol = text.query.pages;
+	for (var key in lol) {
+
+  		result = lol[key].extract;
+
+  		console.log(result);
+
+  		author = author.replace("%20", " ");
+
+      if(result == undefined){
+        result = "No Wikipedia article for "+author;
+      }
+
+  		console.log(author);
+
+  		document.body.innerHTML += result;
+
+  		/*
+		chrome.runtime.sendMessage({deets: result, author: author}, function(response){
+			console.log("response recieved: "+response);
+		});*/
+	}
+});
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    console.log(request);
+      sendResponse({author: author, deets:result});
+});
+
