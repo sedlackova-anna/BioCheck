@@ -27,23 +27,8 @@ function findAuthor(){
   return author;
 }
 
-/*
-function findAuthor(){
-	var element = document.body;
-    var nodes = element.getElementsByTagName("*");
-    var author = "";
-    for (var n=nodes.length-1; n >= 0; n--) {
-        if(nodes[n].textContent.indexOf("@") != -1 && nodes[n].textContent.length < 500){
-        	author = nodes[n].textContent.substring( 0, nodes[n].textContent.indexOf("@")-1);
-        }
-    }
-    return author;
-}
-*/
 var author = capitalize(findAuthor());
-
 author = author.trim().replace(" ","%20").replace(" ","%20");
-
 var result = "Loading";
 
 httpGet("https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts&user-agent=vincentextensionchromelol&exintro=&explaintext=&titles="+author,function(text){
@@ -60,11 +45,6 @@ httpGet("https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&pr
       }
       console.log(result);
   		console.log(author);
-
-  		/*
-		chrome.runtime.sendMessage({deets: result, author: author}, function(response){
-			console.log("response recieved: "+response);
-		});*/
 	}
 });
 
