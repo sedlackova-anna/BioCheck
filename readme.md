@@ -1,4 +1,4 @@
-# ScrabbleHelp
+# BioCheck
 
 Chrome Extension Project for MHacks Nano.
 
