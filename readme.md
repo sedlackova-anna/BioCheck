@@ -1,4 +1,4 @@
-Chrome Extension Project for MHacks Nano
+Chrome Extension Project for MHacks Nano.
 
 It's always good to keep in mind the speaker behind any media you consume. Our product makes this easy. This is our first Chrome extension, so we started with the Google tutorial and built it off of that. The important parts of the program are:
 
